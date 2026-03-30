@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Motion Analyzer</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- 🔝 HERO -->
+<section class="hero">
+
+    <h1>Motion Analyzer</h1>
+
+    <p class="subtitle">
+        Analyze motion from video using physics-based calculations
+    </p>
+
+    <p class="desc">
+        Upload a simple video and instantly generate position, velocity, and acceleration graphs.
+        Built to help students visualize physics concepts clearly and effectively.
+    </p>
+
+</section>
+
+<!-- ⚙️ DASHBOARD -->
+<section class="dashboard">
+
+    <!-- LEFT PANEL -->
+    <div class="panel glass">
+
+        <h3 style="margin-bottom: 20px;">Control Panel</h3>
+
+        <form id="uploadForm">
+
+            <div class="field">
+                <label>Upload Video</label>
+                <input type="file" name="video" required>
+            </div>
+
+            <div class="field">
+                <label>Reference Pixels</label>
+                <input type="number" name="ref_pixels" placeholder="e.g. 200" required>
+            </div>
+
+            <div class="field">
+                <label>Reference Distance (meters)</label>
+                <input type="number" name="ref_meters" placeholder="e.g. 1.5" required>
+            </div>
+
+            <button type="submit" class="analyze-btn">
+                Analyze Motion
+            </button>
+
+        </form>
+
+        <div id="loader" class="hidden" style="margin-top:15px; color:#A0A3BD;">
+            Processing video...
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="graph-section glass">
+
+        <h3 style="margin-bottom: 10px;">Motion Graph (with respect to Time)</h3>
+        <p class="graph-note">
+            All graphs are plotted with respect to time (seconds).
+        </p>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" data-type="all">All</button>
+            <button class="tab" data-type="pos">Position</button>
+            <button class="tab" data-type="vel">Velocity</button>
+            <button class="tab" data-type="acc">Acceleration</button>
+        </div>
+
+        <div id="graph"></div>
+
+        <!-- ANALYSIS TEXT -->
+        <div id="explanation"></div>
+
+    </div>
+
+</section>
+
+<!-- 🚀 FEATURES -->
+<section class="features">
+
+    <div class="feature-card">
+        <h4>📹 Video-Based Tracking</h4>
+        <p>Extract motion directly from real-world video recordings.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>📊 Real-Time Graphs</h4>
+        <p>Instant visualization of motion with accurate time-based graphs.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>⚡ Physics-Based Analysis</h4>
+        <p>Calculations derived using core physics concepts of motion.</p>
+    </div>
+
+</section>
+
+<!-- 📘 EDUCATION -->
+<section class="education">
+
+    <h2>Understanding Motion</h2>
+
+    <div class="edu-grid">
+
+        <div class="edu-card">
+            <h4>Position</h4>
+            <p>Represents the location of an object at a specific moment in time.</p>
+        </div>
+
+        <div class="edu-card">
+            <h4>Velocity</h4>
+            <p>Measures how quickly position changes with respect to time.</p>
+        </div>
+
+        <div class="edu-card">
+            <h4>Acceleration</h4>
+            <p>Describes how velocity changes over time.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<script src="script.js"></script>
+
+</body>
+</html>
