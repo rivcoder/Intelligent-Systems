@@ -64,6 +64,7 @@ body {
     display: flex;
     gap: 32px;
     padding: 40px 60px;
+    flex-wrap: wrap;
 }
 
 /* ================= GLASS ================= */
@@ -88,6 +89,7 @@ body {
 .panel {
     width: 320px;
     padding: 28px;
+    flex-shrink: 0;
 }
 
 /* ================= INPUT ================= */
@@ -136,6 +138,7 @@ input:focus {
 
     box-shadow: 0 10px 30px rgba(139,92,246,0.4);
     transition: all 0.25s ease;
+    margin-top: 10px;
 }
 
 .analyze-btn:hover {
@@ -153,6 +156,7 @@ input:focus {
     flex: 1;
     padding: 28px;
     position: relative;
+    flex-wrap: wrap;
 }
 
 /* glow */
@@ -196,6 +200,7 @@ input:focus {
     width: 100%;
     height: 420px;
     margin-top: 10px;
+    min-height: 420px;
 }
 
 .graph-note {
@@ -264,4 +269,45 @@ input:focus {
 /* ================= LOADER ================= */
 .hidden {
     display: none;
+}
+
+#loader::after {
+    content: "...";
+    animation: dots 1.2s infinite;
+}
+
+@keyframes dots {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+}
+
+#videoCanvas {
+    width: 100%;
+    height: 200px; /* IMPORTANT */
+    margin-top: 15px;
+    border-radius: 12px;
+    cursor: crosshair;
+    background: rgba(255,255,255,0.03); /* subtle placeholder */
+}
+
+
+@media (max-width: 900px) {
+    .dashboard {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .features {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .edu-grid {
+        flex-direction: column;
+    }
+
+    .panel {
+        width: 100%;
+    }
 }
