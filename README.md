@@ -1,24 +1,14 @@
-# Building-Lab
+# Intelligent Systems
 
+A collection of data-driven and backend-focused application prototypes where I experiment with machine learning, system design, and trying to make applications a bit smarter than hardcoded logic.
 
-Building Lab is my personal Data Science experimentation repository.
+This is basically where I build things that go beyond static apps—mixing data processing, backend workflows, and some level of “intelligence” into systems that (ideally) behave a little more meaningfully.
 
+The focus here is on:
 
-This space is dedicated to exploring datasets, testing analytical methods, and building small data-driven projects.
+* Applying machine learning and data-driven approaches
+* Designing backend systems that actually do something useful
+* Exploring how intelligent features fit into real applications
+* Building working prototypes without over-engineering everything
 
-
-The goal of this repository is to document my learning journey in Data Science through practical experimentation and real-world data analysis
-
-
-#PROJECTS-
-
-1. Motion Analyzer - 
-
-Motion Analysis using Computer Vision is a web-based tool that analyzes an object’s motion from a video. It detects the object frame-by-frame, tracks its position, and generates Position–Time, Velocity–Time, and Acceleration–Time graphs using physics principles.
-
-Users upload a video, and the system processes it with OpenCV, converts pixel data into real-world measurements, and calculates velocity and acceleration using numerical methods. The results are displayed as interactive graphs using Plotly.
-
-Built with Flask, NumPy, and a simple web interface, the tool works best with clear, well-lit videos and provides approximate (not perfectly precise) motion analysis.
-
-
-link - https://motion-analyzer-nu.vercel.app/
+> These are intentionally prototypes—built to understand how intelligent systems work in practice, not to pretend every project needs to be production-ready.
