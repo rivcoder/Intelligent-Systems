@@ -11,10 +11,15 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
+<!-- BACKGROUND EFFECTS -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <!-- 🔝 HERO -->
 <section class="hero">
@@ -42,7 +47,10 @@
 
             <div class="field">
                 <label>Upload Video</label>
-                <input type="file" name="video" accept="video/*" required>
+                <div class="file-upload">
+                    <input type="file" name="video" accept="video/*" id="video-input" required>
+                    <span id="file-name">Choose a video file or drag it here...</span>
+                </div>
             </div>
 
             <div class="field">
