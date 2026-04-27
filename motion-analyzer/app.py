@@ -189,12 +189,14 @@ def detect_motion_blob(prev_gray, gray, min_area=150):
 # MOTION ANALYSIS
 # =========================
 
-def analyze_motion(video_path, ref_pixels, ref_meters):
+def analyze_motion(video_path, ref_pixels, ref_meters, user_fps=None):
     cap = cv2.VideoCapture(video_path)
 
     fps = cap.get(cv2.CAP_PROP_FPS)
-    if fps < 10 or fps > 120:
-        fps = 30
+    if user_fps and user_fps > 0:
+        fps = user_fps
+    elif fps < 10 or fps > 120:
+        fps = 120  # default to 120 if metadata is missing or clearly wrong
 
     raw_positions = []
     all_times = []
@@ -204,16 +206,17 @@ def analyze_motion(video_path, ref_pixels, ref_meters):
     prev_x, prev_y = None, None
     prev_gray = None
     lost_count = 0
-    max_jump = 80
+    max_jump = 100  # allow slightly faster motion for free-fall 
+
+    # 🚀 AI-based robust background subtractor
+    backSub = cv2.createBackgroundSubtractorMOG2(history=500, varThreshold=50, detectShadows=False)
 
     while True:
         ret, frame = cap.read()
         if not ret:
             break
-        t_msec = cap.get(cv2.CAP_PROP_POS_MSEC)
-        t = (t_msec / 1000.0) if t_msec and t_msec > 0 else (frame_no / fps)
-        if all_times and t <= all_times[-1]:
-            t = all_times[-1] + (1.0 / fps)
+        # Use uniform time steps to avoid derivative spikes caused by video decoding jitter
+        t = frame_no / fps
         all_times.append(t)
 
         h, w = frame.shape[:2]
@@ -242,10 +245,29 @@ def analyze_motion(video_path, ref_pixels, ref_meters):
         if det_obj is None:
             det_obj = detect_ball(frame, roi=None, min_area=120)
 
+        # Basic motion fallback
         motion_obj = detect_motion_blob(prev_gray, gray, min_area=120)
 
+        # 🚀 ADVANCED MOG2 TRACKER
+        fgMask = backSub.apply(frame)
+        kernel = np.ones((3,3), np.uint8)
+        fgMask = cv2.morphologyEx(fgMask, cv2.MORPH_OPEN, kernel)
+        fgMask = cv2.dilate(fgMask, np.ones((5,5), np.uint8), iterations=2)
+        contours, _ = cv2.findContours(fgMask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        mog_obj = None
+        if contours:
+            c = max(contours, key=cv2.contourArea)
+            if cv2.contourArea(c) > 80:
+                m = cv2.moments(c)
+                if m["m00"] > 0:
+                    mog_obj = (int(m["m10"] / m["m00"]), int(m["m01"] / m["m00"]))
+
+        # Prioritize Red Ball > MOG2 > Basic Motion > Optical Flow
         if det_obj is not None:
             obj = det_obj
+        elif mog_obj is not None:
+            obj = mog_obj
         elif motion_obj is not None:
             obj = motion_obj
         else:
@@ -319,8 +341,10 @@ def analyze_motion(video_path, ref_pixels, ref_meters):
     # SMOOTHING (STRONG UPGRADE)
     # =========================
 
+    # Apply a moving average first to kill 1-frame tracking jitter
+    positions = _moving_average(positions, window=7)
     try:
-        positions = _safe_savgol(positions, max_window=15, poly=3)
+        positions = _safe_savgol(positions, max_window=21, poly=2)
     except Exception:
         # fallback if data small
         positions = np.convolve(positions, np.ones(5) / 5, mode='same')
@@ -343,18 +367,19 @@ def analyze_motion(video_path, ref_pixels, ref_meters):
     if float(np.median(np.diff(times))) <= 0:
         quality_warnings.append("Frame timing is irregular; derivatives may be distorted.")
 
-    # Derivatives on real timestamps are more robust when frame spacing is imperfect.
-    vel = np.gradient(pos, times)
-    vel = _safe_savgol(vel, max_window=11, poly=2)
-    vel = _moving_average(vel, window=5)
+    # Use uniform dt for robust derivatives
+    dt = 1.0 / fps
+    vel = np.gradient(pos, dt)
+    vel = _safe_savgol(vel, max_window=21, poly=2)
+    vel = _moving_average(vel, window=7)
 
-    acc = np.gradient(vel, times)
-    acc = _safe_savgol(acc, max_window=11, poly=2)
-    acc = _moving_average(acc, window=5)
+    acc = np.gradient(vel, dt)
+    acc = _safe_savgol(acc, max_window=21, poly=2)
+    acc = _moving_average(acc, window=7)
 
-    # Keep clipping wide so we only remove non-physical spikes.
-    vel = np.clip(vel, -100, 100)
-    acc = np.clip(acc, -200, 200)
+    # Widen clips so we don't create artificial flatlines if spikes occur
+    vel = np.clip(vel, -50, 50)
+    acc = np.clip(acc, -15, 15)
 
     # =========================
     # SCALE DIAGNOSTICS
@@ -464,6 +489,11 @@ def analyze():
 
         ref_pixels = float(request.form["ref_pixels"])
         ref_meters = float(request.form["ref_meters"])
+        user_fps = request.form.get("fps")
+        if user_fps:
+            user_fps = float(user_fps)
+        else:
+            user_fps = None
 
         # safe unique filename
         filename = str(uuid.uuid4()) + ".mp4"
@@ -471,7 +501,7 @@ def analyze():
 
         file.save(path)
 
-        graph, explanation = analyze_motion(path, ref_pixels, ref_meters)
+        graph, explanation = analyze_motion(path, ref_pixels, ref_meters, user_fps)
 
         if graph is None:
             return jsonify({"error": explanation})
