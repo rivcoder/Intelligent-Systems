@@ -1,53 +1,31 @@
-# Intelligent Systems
+# HackVerse
 
-A collection of data-driven and backend-focused application prototypes where I experiment with machine learning, system design, and trying to make applications a bit smarter than hardcoded logic.
+A collection of AI-integrated backend and security tooling prototypes — projects that lean on LLM APIs and rule-based scoring to make backend systems a bit smarter than static logic.
 
-This is basically where I build things that go beyond static apps—mixing data processing, backend workflows, and some level of “intelligence” into systems that (ideally) behave a little more meaningfully.
+## Projects
 
-The focus here is on:
+### 🛡️ NHI-Agent — NHI Governance Agent
+**Security agent for non-human identity risk in code repos**
 
-* Applying machine learning and data-driven approaches
-* Designing backend systems that actually do something useful
-* Exploring how intelligent features fit into real applications
-* Building working prototypes without over-engineering everything
+Scans GitHub/GitLab repositories for hardcoded credentials and secrets, sends findings to the Gemini 2.0 Flash API for risk scoring, and can auto-remediate by opening pull requests. Built solo for the Google Cloud Rapid Agent Hackathon 2026.
 
+`Python` `Gemini API` `GitHub/GitLab APIs` `Risk Scoring`
 
-## 🚀 Projects
+### 🔍 ShadowFix — Data Pipeline Validator
+**Catches data pipeline issues before they become production incidents**
 
-### 🎯 Intent-Based Intelligence System
-**NLP pipeline that understands what a user actually means**
+Validates data pipelines end-to-end using BigQuery and a FastAPI backend, applying a weighted risk-scoring formula (rule-based, not a trained model) to flag problems before they surface downstream.
 
-Goes beyond keyword matching — a backend system that classifies user intent from natural language input and routes it to the appropriate response or action. Built for scenarios where understanding *what someone wants* matters more than what they literally typed.
+`Python` `FastAPI` `BigQuery` `Risk Scoring`
 
-**Key Focus Areas:** Intent classification · NLP preprocessing · Response routing logic · Scalable backend architecture
+## Stack
 
-`Python` `Flask` `NLP` `Machine Learning`
+`Python` `FastAPI` `Gemini API` `BigQuery` `Risk Scoring`
 
-> 🔗 *Backend deployment in progress*
+## Note
 
----
+These are working prototypes focused on doing something real in a backend, not polished demos. "Intelligence" here means LLM API calls and rule-based scoring — not custom-trained ML/DL/NLP models. More projects get added as they move from private experiments to stable versions.
 
-### 🏃 Motion Analyzer
-**Computer vision system for real-time motion detection and analysis**
+## License
 
-Uses computer vision to detect and analyze human motion from video input. The frontend is live and deployed; the backend CV pipeline is in active development. Built to demonstrate practical deep learning applied to real-time visual data.
-
-**Key Focus Areas:** Computer vision · Motion detection · Real-time frame analysis · Deep learning model integration
-
-`Python` `OpenCV` `Deep Learning` `Flask`
-
-> 🔗 *Frontend deployed · Backend in development*
-
-
-> 🔗 https://motion-analyzer-nu.vercel.app/
----
-
-## 🛠 Stack
-
-`Python` `Flask` `Machine Learning` `Deep Learning` `OpenCV` `NLP` `HTML` `CSS` `JavaScript`
-
----
-
-## 📌 Note
-
-These projects prioritize working systems over clean demos. The focus is on building intelligent backends that do something real — not showcase notebooks. More projects being moved from private to public as they hit stable versions.
+MIT — see [LICENSE](LICENSE).
