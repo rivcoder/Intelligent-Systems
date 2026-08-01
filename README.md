@@ -16,11 +16,15 @@ Scans GitHub/GitLab repositories for hardcoded credentials and secrets, sends fi
 
 Validates data pipelines end-to-end using BigQuery and a FastAPI backend, applying a weighted risk-scoring formula (rule-based, not a trained model) to flag problems before they surface downstream.
 
-`Python` `FastAPI` `BigQuery` `Risk Scoring`
+`Python` `FastAPI` `BigQuery` `Risk Scoring` `Gemini API`
 
-## Stack
+### Motion Analyzer - Tracking motion
+**
 
-`Python` `FastAPI` `Gemini API` `BigQuery` `Risk Scoring`
+Physics-based motion tracking app — upload a video and get position, velocity, and acceleration graphs via OpenCV object tracking. Flask + OpenCV + Plotly
+
+`python` `flask` `OpenCV` `Plotly`
+
 
 ## Note
 
