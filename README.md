@@ -19,7 +19,7 @@ Validates data pipelines end-to-end using BigQuery and a FastAPI backend, applyi
 `Python` `FastAPI` `BigQuery` `Risk Scoring` `Gemini API`
 
 ### Motion Analyzer - Tracking motion
-**Physics Project
+**Physics Project**
 
 Physics-based motion tracking app — upload a video and get position, velocity, and acceleration graphs via OpenCV object tracking. Flask + OpenCV + Plotly
 
